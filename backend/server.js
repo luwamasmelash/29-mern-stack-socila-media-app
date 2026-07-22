@@ -31,6 +31,9 @@ app.use(
     functions,
   })
 );
+app.get('/', (req, res) => {
+  res.send('Server working')
+})
 
 
 app.listen(PORT, () => {
