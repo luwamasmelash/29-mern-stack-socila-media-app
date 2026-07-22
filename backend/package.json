@@ -15,7 +15,7 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "inngest": "^3.27.1",
+    "inngest": "^4.13.0",
     "mongoose": "^9.8.0",
     "multer": "^2.2.0"
   }
