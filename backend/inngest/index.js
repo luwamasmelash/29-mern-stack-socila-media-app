@@ -23,7 +23,13 @@ const syncUserCreation = inngest.createFunction(
       image_url,
     } = event.data;
 
-    let username = email_addresses[0].email_address.split("@")[0];
+    const email = email_addresses?.[0]?.email_address;
+
+    if (!email) {
+      throw new Error("No email found from Clerk event");
+    }
+
+    let username = email.split("@")[0];
 
     const existingUser = await User.findOne({ username });
 
@@ -33,8 +39,8 @@ const syncUserCreation = inngest.createFunction(
 
     await User.create({
       _id: id,
-      email: email_addresses[0].email_address,
-      full_name: `${first_name} ${last_name}`,
+      email,
+      full_name: `${first_name || ""} ${last_name || ""}`.trim(),
       profile_picture: image_url,
       username,
     });
@@ -59,9 +65,11 @@ const syncUserUpdation = inngest.createFunction(
       image_url,
     } = event.data;
 
+    const email = email_addresses?.[0]?.email_address;
+
     await User.findByIdAndUpdate(id, {
-      email: email_addresses[0].email_address,
-      full_name: `${first_name} ${last_name}`,
+      email,
+      full_name: `${first_name || ""} ${last_name || ""}`.trim(),
       profile_picture: image_url,
     });
   }
