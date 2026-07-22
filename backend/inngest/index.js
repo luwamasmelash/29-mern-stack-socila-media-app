@@ -1,5 +1,6 @@
 import { Inngest } from "inngest";
 import User from "../models/User.js";
+import { connectDB } from "../config/db.js";
 
 export const inngest = new Inngest({
   id: "pingup-app",
@@ -15,6 +16,8 @@ const syncUserCreation = inngest.createFunction(
     },
   },
   async ({ event }) => {
+    await connectDB();
+
     const {
       id,
       first_name,
@@ -37,6 +40,12 @@ const syncUserCreation = inngest.createFunction(
       username = `${username}${Math.floor(Math.random() * 10000)}`;
     }
 
+    console.log("Saving user:", {
+      id,
+      email,
+      username,
+    });
+
     await User.create({
       _id: id,
       email,
@@ -57,6 +66,8 @@ const syncUserUpdation = inngest.createFunction(
     },
   },
   async ({ event }) => {
+    await connectDB();
+
     const {
       id,
       first_name,
@@ -85,6 +96,8 @@ const syncUserDeletion = inngest.createFunction(
     },
   },
   async ({ event }) => {
+    await connectDB();
+
     await User.findByIdAndDelete(event.data.id);
   }
 );
