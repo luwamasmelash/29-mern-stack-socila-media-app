@@ -6,7 +6,6 @@ export const inngest = new Inngest({
   id: "pingup-app",
 });
 
-
 // Sync user creation
 const syncUserCreation = inngest.createFunction(
   {
@@ -49,13 +48,12 @@ const syncUserCreation = inngest.createFunction(
     await User.create({
       _id: id,
       email,
-      full_name: `${first_name || ""} ${last_name || ""}`.trim(),
-      profile_picture: image_url,
+      full_name: `${first_name || ""} ${last_name || ""}`.trim() || username,
+      profile_picture: image_url || "",
       username,
     });
   }
 );
-
 
 // Sync user update
 const syncUserUpdation = inngest.createFunction(
@@ -80,12 +78,11 @@ const syncUserUpdation = inngest.createFunction(
 
     await User.findByIdAndUpdate(id, {
       email,
-      full_name: `${first_name || ""} ${last_name || ""}`.trim(),
-      profile_picture: image_url,
+      full_name: `${first_name || ""} ${last_name || ""}`.trim() || "Unknown User",
+      profile_picture: image_url || "",
     });
   }
 );
-
 
 // Sync user deletion
 const syncUserDeletion = inngest.createFunction(
@@ -97,11 +94,9 @@ const syncUserDeletion = inngest.createFunction(
   },
   async ({ event }) => {
     await connectDB();
-
     await User.findByIdAndDelete(event.data.id);
   }
 );
-
 
 export const functions = [
   syncUserCreation,
