@@ -6,6 +6,8 @@ import { inngest, functions } from "./inngest/index.js";
 import { clerkMiddleware, clerkClient, getAuth } from '@clerk/express'
 import { serve } from "inngest/express";
 import userRouter from "./routes/userRoutes.js";
+import postRouter from "./routes/postRoutes.js";
+import storyRouter from "./routes/storyRoutes.js";
 
 
 
@@ -18,11 +20,9 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-
-
+app.use(clerkMiddleware())
 
 await connectDB();
-
 
 // Inngest endpoint
 app.use(
@@ -32,13 +32,12 @@ app.use(
     functions,
   })
 );
-
-app.use(clerkMiddleware())
-
 app.use('/api/user', userRouter)
 app.get('/', (req, res) => {
   res.send('Server working')
 })
+app.use('/api/post', postRouter)
+app.use('/api/story', storyRouter)
 
 
 app.listen(PORT, () => {
