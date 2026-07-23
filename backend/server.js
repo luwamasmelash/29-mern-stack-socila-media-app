@@ -18,7 +18,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-app.use(clerkMiddleware())
+
 
 
 await connectDB();
@@ -32,6 +32,9 @@ app.use(
     functions,
   })
 );
+
+app.use(clerkMiddleware())
+
 app.use('/api/user', userRouter)
 app.get('/', (req, res) => {
   res.send('Server working')

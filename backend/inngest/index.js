@@ -236,9 +236,11 @@ const sendNewConnectionRequestReminder = inngest.createFunction(
 );
 
 
+
 export const functions = [
   syncUserCreation,
   syncUserUpdation,
   syncUserDeletion,
   sendNewConnectionRequestReminder,
 ];
+
