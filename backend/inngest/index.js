@@ -120,7 +120,7 @@ const sendNewConnectionRequestReminder = inngest.createFunction(
 
         const connection =
           await Connection.findById(connectionId)
-          .populate("from_user_id to_user_id");
+            .populate("from_user_id to_user_id");
 
 
         const subject = "👋 New Connection Request";
@@ -183,7 +183,7 @@ const sendNewConnectionRequestReminder = inngest.createFunction(
 
         const connection =
           await Connection.findById(connectionId)
-          .populate("from_user_id to_user_id");
+            .populate("from_user_id to_user_id");
 
 
         if (connection.status === "accepted") {
@@ -268,6 +268,54 @@ const deleteStory = inngest.createFunction(
   }
 );
 
+const sendNotificationOfUnseenMessages = inngest.createFunction(
+  {
+    id: "send-unseen-messages-notification",
+    triggers: [
+      {
+        cron: "TZ=America/New_York 0 9 * * *",
+      },
+    ],
+  },
+  async ({ step }) => {
+    const messages = await Message.find({ seen: false }).populate("to_user_id");
+
+    const unseenCount = {};
+
+    messages.forEach((message) => {
+      unseenCount[message.to_user_id._id] =
+        (unseenCount[message.to_user_id._id] || 0) + 1;
+    });
+
+    for (const userId in unseenCount) {
+      const user = await User.findById(userId);
+
+      const subject = `📬 You have ${unseenCount[userId]} unseen messages`;
+
+      const body = `
+      <div style="font-family: Arial, sans-serif; padding:20px;">
+        <h2>Hi ${user.full_name},</h2>
+        <p>You have ${unseenCount[userId]} unseen messages.</p>
+        <p>
+          Click
+          <a href="${process.env.FRONTEND_URL}/messages">
+            here
+          </a>
+          to view them.
+        </p>
+      </div>
+      `;
+
+      await sendEmail({
+        to: user.email,
+        subject,
+        body,
+      });
+    }
+
+    return { message: "Notification sent." };
+  }
+);
 
 
 export const functions = [
@@ -275,6 +323,7 @@ export const functions = [
   syncUserUpdation,
   syncUserDeletion,
   sendNewConnectionRequestReminder,
-  deleteStory
+  deleteStory,
+  sendNotificationOfUnseenMessages
 ];
 

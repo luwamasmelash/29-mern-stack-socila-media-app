@@ -8,6 +8,7 @@ import { serve } from "inngest/express";
 import userRouter from "./routes/userRoutes.js";
 import postRouter from "./routes/postRoutes.js";
 import storyRouter from "./routes/storyRoutes.js";
+import messageRouter from "./routes/messageRouter.js";
 
 
 
@@ -38,6 +39,7 @@ app.get('/', (req, res) => {
 })
 app.use('/api/post', postRouter)
 app.use('/api/story', storyRouter)
+app.use('/api/message', messageRouter)
 
 
 app.listen(PORT, () => {
