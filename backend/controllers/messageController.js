@@ -1,5 +1,5 @@
 import fs from "fs";
-import imagekit from "../configs/imagekit.js";
+import imagekit from '../configs/imageKit.js'
 import Message from "../models/Message.js";
 
 // Store SSE connections
