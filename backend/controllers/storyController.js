@@ -1,6 +1,8 @@
 import { inngest } from "../inngest/index.js";
 import Story from "../models/Story.js";
 import User from "../models/User.js";
+import fs from 'fs'
+import imagekit from '../configs/imageKit.js'
 
 // Add User Story
 export const addUserStory = async (req, res) => {
@@ -13,7 +15,7 @@ export const addUserStory = async (req, res) => {
     // upload media to imagekit
     if (media_type == 'image' || media_type == 'video') {
       const fileBuffer = fs.readFileSync(media.path);
-      const response = await imagekit.upload({
+      const response = await imagekit.files.upload({
         file: fileBuffer,
         fileName: media.originalname,
       });
@@ -31,8 +33,8 @@ export const addUserStory = async (req, res) => {
 
     // schedule story deletion after 24 hours
     await inngest.send({
-        name: 'app/story.delete',
-        data: { storyId: story._id }
+      name: 'app/story.delete',
+      data: { storyId: story._id }
     })
 
     res.json({ success: true, message: 'Story created successfully', story });
@@ -45,21 +47,21 @@ export const addUserStory = async (req, res) => {
 
 // Get User Stories
 export const getStories = async (req, res) => {
-    try {
-        const { userId } = req.auth();
-        const user = await User.findById(userId);
+  try {
+    const { userId } = req.auth();
+    const user = await User.findById(userId);
 
-        // User connections and followings
-        const userIds = [userId, ...user.connections, ...user.following];
+    // User connections and followings
+    const userIds = [userId, ...user.connections, ...user.following];
 
-        const stories = await Story.find({
-            user: { $in: userIds }
-        }).populate('user').sort({ createdAt: -1 });
+    const stories = await Story.find({
+      user: { $in: userIds }
+    }).populate('user').sort({ createdAt: -1 });
 
-        res.json({ success: true, stories });
-    } catch (error) {
-        console.log(error);
-        res.json({ success: false, message: error.message });
-    }
+    res.json({ success: true, stories });
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
 }
 
