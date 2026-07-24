@@ -13,6 +13,7 @@ import Layout from './pages/Layout';
 import { Toaster } from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { fetchUser } from './features/user/userSlice';
+import { fetchConnections } from './features/connections/connectionsSlice';
 
 const App = () => {
   const {user} = useUser()
@@ -25,6 +26,7 @@ const App = () => {
       if(user) {
         const token = await getToken()
         dispatch(fetchUser(token))
+        dispatch(fetchConnections(token))
       }
     }
     fetchData()
