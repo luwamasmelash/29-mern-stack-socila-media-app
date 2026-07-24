@@ -21,6 +21,7 @@ export const addUserStory = async (req, res) => {
       });
       media_url = response.url;
     }
+    console.log("ImageKit upload finished");
 
     // create story
     const story = await Story.create({
