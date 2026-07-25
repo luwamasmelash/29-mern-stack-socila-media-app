@@ -15,10 +15,26 @@ const Connections = () => {
     const { connections, pendingConnections, followers, following } = useSelector((state) => state.connections)
 
     const dataArray = [
-        { label: 'Followers', value: followers, icon: Users },
-        { label: 'Following', value: following, icon: UserCheck },
-        { label: 'Pending', value: pendingConnections, icon: UserRoundPen },
-        { label: 'Connections', value: connections, icon: UserPlus },
+        {
+            label: 'Followers',
+            value: followers || [],
+            icon: Users
+        },
+        {
+            label: 'Following',
+            value: following || [],
+            icon: UserCheck
+        },
+        {
+            label: 'Pending',
+            value: pendingConnections || [],
+            icon: UserRoundPen
+        },
+        {
+            label: 'Connections',
+            value: connections || [],
+            icon: UserPlus
+        },
     ]
 
     const handleUnfollow = async (userId) => {
@@ -123,7 +139,7 @@ const Connections = () => {
                                     )}
 
                                     {currentTab === 'Pending' && (
-                                        <button onClick={()=> acceptConnection(user._id)} className='w-full p-2 text-sm rounded bg-slate-100 hover:bg-slate-200 text-black active:scale-95 transition cursor-pointer'>
+                                        <button onClick={() => acceptConnection(user._id)} className='w-full p-2 text-sm rounded bg-slate-100 hover:bg-slate-200 text-black active:scale-95 transition cursor-pointer'>
                                             Accept
                                         </button>
                                     )}

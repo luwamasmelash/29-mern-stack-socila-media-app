@@ -14,9 +14,9 @@ export const inngest = new Inngest({
 const syncUserCreation = inngest.createFunction(
   {
     id: "sync-user-from-clerk",
-    trigger: {
-      event: "clerk/user.created",
-    },
+  },
+  {
+    event: "clerk/user.created",
   },
   async ({ event }) => {
     await connectDB();
@@ -51,6 +51,8 @@ const syncUserCreation = inngest.createFunction(
       profile_picture: image_url || "",
       username,
     });
+
+    console.log("User created in MongoDB:", id);
   }
 );
 
