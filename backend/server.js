@@ -21,10 +21,6 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-app.use(clerkMiddleware())
-
-await connectDB();
-
 // Inngest endpoint
 app.use(
   "/api/inngest",
@@ -33,6 +29,11 @@ app.use(
     functions,
   })
 );
+app.use(clerkMiddleware())
+
+await connectDB();
+
+
 app.use('/api/user', userRouter)
 app.get('/', (req, res) => {
   res.send('Server working')
