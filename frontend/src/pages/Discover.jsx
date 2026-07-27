@@ -7,6 +7,7 @@ import { useAuth } from '@clerk/clerk-react'
 import { useDispatch } from 'react-redux'
 import toast from 'react-hot-toast'
 import { fetchUser } from '../features/user/userSlice'
+import api from '../api/axios'
 
 const Discover = () => {
 

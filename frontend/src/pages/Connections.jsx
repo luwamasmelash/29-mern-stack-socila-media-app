@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAuth } from '@clerk/clerk-react';
 import { fetchConnections } from '../features/connections/connectionsSlice';
+import toast from 'react-hot-toast';
+import api from '../api/axios';
 
 const Connections = () => {
 

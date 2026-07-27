@@ -45,27 +45,14 @@ export const sendMessage = async (req, res) => {
 
         // Upload image if present
         if (image) {
-            const fileBuffer = fs.readFileSync(image.path);
+            const buffer = fs.readFileSync(image.path);
 
-            const uploadedFile = await imagekit.upload({
-                file: fileBuffer,
+            const response = await imagekit.files.upload({
+                file: buffer.toString("base64"),
                 fileName: image.originalname,
-                folder: "/chat-images",
             });
 
-            media_url = imagekit.url({
-                path: uploadedFile.filePath,
-                transformation: [
-                    {
-                        quality: "auto",
-                        format: "webp",
-                        width: "1280",
-                    },
-                ],
-            });
-
-            // Optional: remove temp file
-            fs.unlinkSync(image.path);
+            messageData.media_url = response.url;
         }
 
         // Save message
