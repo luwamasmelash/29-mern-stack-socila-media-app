@@ -43,7 +43,12 @@ export const sendMessage = async (req, res) => {
         let media_url = "";
         let message_type = image ? "image" : "text";
 
-        // Upload image if present
+        let messageData = {
+            from_user_id: userId,
+            to_user_id,
+            text,
+        };
+
         if (image) {
             const buffer = fs.readFileSync(image.path);
 
@@ -53,7 +58,10 @@ export const sendMessage = async (req, res) => {
             });
 
             messageData.media_url = response.url;
+            messageData.message_type = "image";
         }
+
+        const newMessage = await Message.create(messageData);
 
         // Save message
         const message = await Message.create({
