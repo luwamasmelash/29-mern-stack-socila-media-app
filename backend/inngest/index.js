@@ -16,9 +16,11 @@ console.log("Inngest functions loaded");
 const syncUserCreation = inngest.createFunction(
   {
     id: "sync-user-from-clerk",
-    trigger: {
-      event: "clerk/user.created",
-    },
+    triggers: [
+      {
+        event: "clerk/user.created",
+      },
+    ],
   },
   async ({ event }) => {
     await connectDB();
@@ -62,9 +64,11 @@ const syncUserCreation = inngest.createFunction(
 const syncUserUpdation = inngest.createFunction(
   {
     id: "update-user-from-clerk",
-    trigger: {
-      event: "clerk/user.updated",
-    },
+    triggers: [
+      {
+        event: "clerk/user.updated",
+      },
+    ],
   },
   async ({ event }) => {
     await connectDB();
@@ -93,9 +97,11 @@ const syncUserUpdation = inngest.createFunction(
 const syncUserDeletion = inngest.createFunction(
   {
     id: "delete-user-from-clerk",
-    trigger: {
-      event: "clerk/user.deleted",
-    },
+    triggers: [
+      {
+        event: "clerk/user.deleted",
+      },
+    ],
   },
   async ({ event }) => {
     await connectDB();
