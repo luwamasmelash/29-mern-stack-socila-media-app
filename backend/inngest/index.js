@@ -322,9 +322,6 @@ const sendNotificationOfUnseenMessages = inngest.createFunction(
 export const functions = [
   syncUserCreation,
   syncUserUpdation,
-  syncUserDeletion,
-  sendNewConnectionRequestReminder,
-  deleteStory,
-  sendNotificationOfUnseenMessages
+  syncUserDeletion
 ];
 
