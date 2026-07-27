@@ -41,7 +41,7 @@ app.use('/api/post', postRouter)
 app.use('/api/story', storyRouter)
 app.use('/api/message', messageRouter)
 
-
+console.log("Registered functions:", functions.map(fn => fn.id));
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

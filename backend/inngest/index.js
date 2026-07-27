@@ -9,6 +9,8 @@ export const inngest = new Inngest({
   id: "pingup-app",
 });
 
+console.log("Inngest functions loaded");
+
 
 // Sync user creation
 const syncUserCreation = inngest.createFunction(
