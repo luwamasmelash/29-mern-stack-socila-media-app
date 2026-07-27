@@ -7,7 +7,7 @@ import { inngest } from "../inngest/index.js";
 // Get User Data using userId
 export const getUserData = async (req, res) => {
     try {
-        const { userId } = req.auth();
+        const { userId } = await req.auth();
 
         const user = await User.findById(userId);
 

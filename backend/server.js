@@ -5,6 +5,10 @@ import { connectDB } from "./configs/db.js";
 import { inngest, functions } from "./inngest/index.js";
 import { clerkMiddleware } from "@clerk/express";
 import { serve } from "inngest/express";
+import userRouter from './routes/userRoutes.js'
+import postRouter from './routes/postRoutes.js'
+import storyRouter from './routes/storyRoutes.js'
+import messageRouter from './routes/messageRouter.js'
 
 dotenv.config();
 
@@ -23,6 +27,10 @@ app.use(
     functions,
   })
 );
+app.use('/api/user', userRouter)
+app.use('/api/post', postRouter)
+app.use('/api/story', storyRouter)
+app.use('/api/message', messageRouter)
 
 await connectDB();
 
