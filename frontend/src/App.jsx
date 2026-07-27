@@ -25,23 +25,26 @@ const App = () => {
   const { pathname } = useLocation()
   const pathnameRef = useRef(pathname)
 
+  const fetchedUser = useRef(false);
+
   useEffect(() => {
-  if (!isLoaded || !user) return;
+    if (!isLoaded || !user || fetchedUser.current) return;
 
-  const fetchData = async () => {
-    const token = await getToken();
+    const fetchData = async () => {
+      fetchedUser.current = true;
 
-    console.log("User:", user);
-    console.log("Token:", token);
+      const token = await getToken();
 
-    if (!token) return;
+      if (!token) return;
 
-    await dispatch(fetchUser(token));
-    await dispatch(fetchConnections(token));
-  };
+      console.log("User:", user);
 
-  fetchData();
-}, [isLoaded, user]);
+      await dispatch(fetchUser(token));
+      await dispatch(fetchConnections(token));
+    };
+
+    fetchData();
+  }, [isLoaded, user?.id, dispatch, getToken]);
 
   useEffect(() => {
     pathnameRef.current = pathname

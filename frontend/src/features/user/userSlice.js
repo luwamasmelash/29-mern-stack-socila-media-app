@@ -55,8 +55,6 @@ const userSlice = createSlice({
         })
 
         .addCase(fetchUser.fulfilled, (state, action) => {
-            console.log("Redux user received:", action.payload)
-
             state.value = action.payload
             state.loading = false
             state.error = null
