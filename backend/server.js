@@ -12,6 +12,10 @@ const app = express();
 
 app.use(cors());
 
+app.use(express.json());
+
+app.use(clerkMiddleware());
+
 app.use(
   "/api/inngest",
   serve({
@@ -19,10 +23,6 @@ app.use(
     functions,
   })
 );
-
-app.use(express.json());
-
-app.use(clerkMiddleware());
 
 await connectDB();
 
