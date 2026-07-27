@@ -49,25 +49,31 @@ const userSlice = createSlice({
     reducers: {},
 
     extraReducers: (builder) => {
-        builder
-            .addCase(fetchUser.pending, (state) => {
-                state.loading = true
-            })
+    builder
+        .addCase(fetchUser.pending, (state) => {
+            state.loading = true
+        })
 
-            .addCase(fetchUser.fulfilled, (state, action) => {
-                state.value = action.payload
-                state.loading = false
-            })
+        .addCase(fetchUser.fulfilled, (state, action) => {
+            console.log("Redux user received:", action.payload)
 
-            .addCase(fetchUser.rejected, (state, action) => {
-                state.loading = false
-                state.error = action.payload
-            })
+            state.value = action.payload
+            state.loading = false
+            state.error = null
+        })
 
-            .addCase(updateUser.fulfilled, (state, action) => {
-                state.value = action.payload
-            })
-    }
+        .addCase(fetchUser.rejected, (state, action) => {
+            console.log("Fetch user failed:", action.payload)
+
+            state.loading = false
+            state.value = null
+            state.error = action.payload
+        })
+
+        .addCase(updateUser.fulfilled, (state, action) => {
+            state.value = action.payload
+        })
+}
 })
 
 export default userSlice.reducer

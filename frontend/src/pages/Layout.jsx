@@ -1,14 +1,18 @@
-import {React, useState} from 'react'
-import { Outlet } from 'react-router-dom'; 
-import Sidebar from '../components/Sidebar'; 
-import { X, Menu } from 'lucide-react'; 
+import { React, useState } from 'react'
+import { Outlet } from 'react-router-dom';
+import Sidebar from '../components/Sidebar';
+import { X, Menu } from 'lucide-react';
 import { dummyUserData } from '../assets/assets';
 import Loading from '../components/Loading';
 import { useSelector } from 'react-redux';
 
 const Layout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const user = useSelector((state) => state.user.value)
+    const { value: user, loading } = useSelector((state) => state.user)
+
+    if (loading) {
+        return <Loading />
+    }
 
     return user ? (
         <div className='w-full flex h-screen'>
@@ -17,20 +21,20 @@ const Layout = () => {
                 <Outlet />
             </div>
             {
-                sidebarOpen ? 
-                <X 
-                    className='absolute top-3 right-3 p-2 z-100 bg-white rounded-md shadow w-10 h-10 text-gray-600 sm:hidden' 
-                    onClick={() => setSidebarOpen(false)} 
-                />
-                : 
-                <Menu 
-                    className='absolute top-3 right-3 p-2 z-100 bg-white rounded-md shadow w-10 h-10 text-gray-600 sm:hidden' 
-                    onClick={() => setSidebarOpen(true)} 
-                />
+                sidebarOpen ?
+                    <X
+                        className='absolute top-3 right-3 p-2 z-100 bg-white rounded-md shadow w-10 h-10 text-gray-600 sm:hidden'
+                        onClick={() => setSidebarOpen(false)}
+                    />
+                    :
+                    <Menu
+                        className='absolute top-3 right-3 p-2 z-100 bg-white rounded-md shadow w-10 h-10 text-gray-600 sm:hidden'
+                        onClick={() => setSidebarOpen(true)}
+                    />
             }
         </div>
     ) : (
-      <Loading />
+        <Loading />
     )
 }
 
