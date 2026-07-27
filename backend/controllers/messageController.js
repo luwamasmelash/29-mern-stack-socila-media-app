@@ -40,13 +40,12 @@ export const sendMessage = async (req, res) => {
         const { to_user_id, text } = req.body;
         const image = req.file;
 
-        let media_url = "";
-        let message_type = image ? "image" : "text";
-
         let messageData = {
             from_user_id: userId,
             to_user_id,
             text,
+            message_type: "text",
+            media_url: null,
         };
 
         if (image) {
@@ -61,35 +60,23 @@ export const sendMessage = async (req, res) => {
             messageData.message_type = "image";
         }
 
-        const newMessage = await Message.create(messageData);
+        const message = await Message.create(messageData);
 
-        // Save message
-        const message = await Message.create({
-            from_user_id: userId,
-            to_user_id,
-            text,
-            message_type,
-            media_url,
-        });
+        const messageWithUserData = await Message.findById(message._id)
+            .populate("from_user_id");
 
-        // Populate sender data
-        const messageWithUserData = await Message.findById(message._id).populate(
-            "from_user_id"
-        );
-
-        // Respond to sender
         res.json({
             success: true,
             message: messageWithUserData,
         });
 
-        // Push message to receiver via SSE
         if (connections[to_user_id]) {
             connections[to_user_id].write(
                 `event: message\n` +
                 `data: ${JSON.stringify(messageWithUserData)}\n\n`
             );
         }
+
     } catch (error) {
         console.error(error);
 
