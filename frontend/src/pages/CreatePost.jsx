@@ -38,7 +38,7 @@ const CreatePost = () => {
         formData.append('images', image);
       });
 
-      const token = await getToken();
+      const token = await getToken({ template: undefined })
       const { data } = await api.post('/api/post/add', formData, {
         headers: {
           Authorization: `Bearer ${token}`,

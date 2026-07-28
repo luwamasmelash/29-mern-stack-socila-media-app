@@ -42,11 +42,11 @@ const Connections = () => {
     const handleUnfollow = async (userId) => {
         try {
             const { data } = await api.post('/api/user/unfollow', { id: userId }, {
-                headers: { Authorization: `Bearer ${await getToken()}` }
+                headers: { Authorization: `Bearer ${await getToken({ template: undefined })}` }
             })
             if (data.success) {
                 toast.success(data.message)
-                dispatch(fetchConnections(await getToken()))
+                dispatch(fetchConnections(await getToken({ template: undefined })))
             } else {
                 toast(data.message)
             }
@@ -58,11 +58,11 @@ const Connections = () => {
     const acceptConnection = async (userId) => {
         try {
             const { data } = await api.post('/api/user/accept', { id: userId }, {
-                headers: { Authorization: `Bearer ${await getToken()}` }
+                headers: { Authorization: `Bearer ${await getToken({ template: undefined })}` }
             })
             if (data.success) {
                 toast.success(data.message)
-                dispatch(fetchConnections(await getToken()))
+                dispatch(fetchConnections(await getToken({ template: undefined })))
             } else {
                 toast(data.message)
             }

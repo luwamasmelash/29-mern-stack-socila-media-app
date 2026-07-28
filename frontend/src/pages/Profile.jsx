@@ -23,7 +23,7 @@ const Profile = () => {
   const [showEdit, setShowEdit] = useState(false)
 
   const fetchUser = async (profileId) => {
-    const token = await getToken()
+    const token = await getToken({ template: undefined })
     try {
       const { data } = await api.post('/api/user/profiles', {profileId}, {
         headers: {Authorization: `Bearer ${token}`}

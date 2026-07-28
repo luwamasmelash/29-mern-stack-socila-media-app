@@ -25,7 +25,7 @@ const ChatBox = () => {
 
     const fetchUserMessages = async () => {
         try {
-            const token = await getToken()
+            const token = await getToken({ template: undefined })
             dispatch(fetchMessages({ token, userId }))
         } catch (error) {
             toast.error(error.message)

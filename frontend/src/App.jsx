@@ -33,7 +33,7 @@ const App = () => {
     const fetchData = async () => {
       fetchedUser.current = true;
 
-      const token = await getToken();
+      const token = await getToken({ skipCache: true });
 
       if (!token) return;
 
